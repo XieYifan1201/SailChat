@@ -44,62 +44,60 @@
 
 ```
 lib/
-├── main.dart                 # 入口，ProviderScope 包一层
+├── main.dart                          # 入口，ProviderScope 包一层
 ├── router/
-│   └── app_router.dart       # GoRouter 路由配置 + 登录态拦截
-├── models/                   # 数据模型，JSON 序列化
-│   ├── message.dart
-│   ├── conversation.dart
-│   ├── friend.dart
-│   ├── friend_request.dart   # 含 UserBrief
-│   ├── user.dart
-│   └── system_notification.dart
-├── services/                 # 网络层（Dio + 拦截器）
-│   ├── http_client.dart      # 全局 Dio 实例，鉴权拦截
-│   ├── user_service.dart
-│   ├── message_service.dart
-│   ├── friend_service.dart
-│   └── interceptors/
-│       └── auth_interceptor.dart   # 自动带 Token，401 清登录态
+│   └── app_router.dart                # GoRouter 路由配置 + 登录态拦截
+├── models/                            # 数据模型，JSON 序列化
+│   ├── message.dart                   # 聊天消息模型，含消息状态和类型
+│   ├── conversation.dart              # 会话模型，解析 targetUser 信息
+│   ├── friend.dart                    # 好友关系模型，含好友用户信息
+│   ├── friend_request.dart            # 好友申请模型，含 UserBrief
+│   ├── user.dart                      # 用户模型，含头像昵称等资料
+│   └── system_notification.dart       # 系统通知模型，好友申请/同意/拒绝
+├── services/                          # 网络层（Dio + 拦截器）
+│   ├── http_client.dart               # 全局 Dio 实例，鉴权拦截 + 白名单
+│   ├── user_service.dart              # 用户接口：登录注册、个人信息、搜索
+│   ├── message_service.dart           # 消息接口：发消息、历史记录、上传文件
+│   └── friend_service.dart            # 好友接口：列表、申请、同意/拒绝
 ├── socket/
-│   └── chat_websocket.dart   # WebSocket 封装，stream 分发消息和通知
-├── store/                    # 状态管理（Riverpod）
-│   ├── auth_provider.dart    # 登录态 & Token 生命周期
-│   ├── user_provider.dart    # 当前用户信息
-│   ├── chat_history_provider.dart  # 每个会话一个 StateNotifier
-│   ├── message_notifier.dart      # 消息收发/已读标记中枢
-│   ├── conversation_provider.dart
-│   ├── friend_provider.dart
-│   ├── target_user_provider.dart  # 跨数据源查用户信息
-│   ├── ws_provider.dart      # WebSocket stream → Riverpod 桥接
-│   ├── settings_provider.dart     # 主题/语言持久化
-│   ├── message_provider.dart      # 消息相关 provider 统一导出
-│   └── riverpod.dart              # 服务层 provider 导出
+│   └── chat_websocket.dart            # WebSocket 封装，stream 分发消息和通知
+├── store/                             # 状态管理（Riverpod）
+│   ├── auth_provider.dart             # 登录态 & Token 生命周期
+│   ├── user_provider.dart             # 当前用户信息
+│   ├── chat_history_provider.dart     # 每个会话一个 StateNotifier
+│   ├── message_notifier.dart          # 消息收发/已读标记中枢
+│   ├── conversation_provider.dart     # 会话列表，缓存优先加载
+│   ├── friend_provider.dart           # 好友列表 & 好友申请列表
+│   ├── target_user_provider.dart      # 跨数据源查用户信息
+│   ├── ws_provider.dart               # WebSocket stream → Riverpod 桥接
+│   ├── settings_provider.dart         # 主题/语言持久化
+│   ├── message_provider.dart          # 消息相关 provider 统一导出
+│   └── riverpod.dart                  # 服务层 provider 导出
 ├── utils/
-│   ├── app_colors.dart       # ThemeExtension 自定义色板
-│   ├── app_theme.dart        # 亮色/暗色 ThemeData
-│   ├── cache_storage.dart    # SharedPreferences 本地缓存
-│   ├── token.dart            # 安全 Token 存储
-│   ├── user_storage.dart     # 用户信息缓存
-│   ├── user_avatar.dart      # 头像组件，无图时显示首字母
-│   └── l10n.dart             # 国际化辅助类
-├── pages/                    # 页面
-│   ├── login_page.dart
-│   ├── main_layout.dart      # 底部导航壳
-│   ├── chats_page.dart       # 会话列表
-│   ├── chat_page.dart        # 聊天室（支持多媒体）
-│   ├── contacts_page.dart    # 通讯录
-│   ├── mine_page.dart        # 我的
-│   ├── add_friend_page.dart
-│   ├── friend_requests_page.dart
-│   ├── friend_detail_page.dart
-│   ├── profile_page.dart
-│   ├── settings_page.dart
-│   └── data_page.dart        # 缓存管理
-└── l10n/                     # 国际化源文件 + 生成代码
-    ├── app_zh.arb
-    ├── app_zh_TW.arb
-    └── app_en.arb
+│   ├── app_colors.dart                # ThemeExtension 自定义色板
+│   ├── app_theme.dart                 # 亮色/暗色 ThemeData
+│   ├── cache_storage.dart             # SharedPreferences 本地缓存
+│   ├── token.dart                     # 安全 Token 存储（FlutterSecureStorage）
+│   ├── user_storage.dart              # 用户信息缓存
+│   ├── user_avatar.dart               # 头像组件，无图时显示首字母
+│   └── l10n.dart                      # 国际化辅助类
+├── pages/                             # 页面
+│   ├── login_page.dart                # 登录注册页
+│   ├── main_layout.dart               # 底部导航壳
+│   ├── chats_page.dart                # 会话列表
+│   ├── chat_page.dart                 # 聊天室（支持多媒体）
+│   ├── contacts_page.dart             # 通讯录
+│   ├── mine_page.dart                 # 我的
+│   ├── add_friend_page.dart           # 添加好友页
+│   ├── friend_requests_page.dart      # 好友申请列表页
+│   ├── friend_detail_page.dart        # 好友详情页
+│   ├── profile_page.dart              # 编辑个人资料页
+│   ├── settings_page.dart             # 设置页
+│   └── data_page.dart                 # 缓存管理页
+└── l10n/                              # 国际化源文件 + 生成代码
+    ├── app_zh.arb                     # 中文简体翻译
+    ├── app_zh_TW.arb                  # 中文繁体翻译
+    └── app_en.arb                     # 英文翻译
 ```
 
 ## 技术栈
