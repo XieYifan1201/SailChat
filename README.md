@@ -8,6 +8,8 @@
 [![Dart](https://img.shields.io/badge/Dart-3.11+-0175C2?logo=dart&logoColor=white)](https://dart.dev)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
+后端 Spring Boot：[SailChat-Server](https://github.com/XieYifan1201/SailChat-Server)
+
 </div>
 
 ---
